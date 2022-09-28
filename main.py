@@ -35,11 +35,11 @@ print(CRED,'\n\n-----------------',CEND,CYELLOW,'AFD',CEND,CRED,' --------------
 afd = generate_afd()
 print(CRED,'\n\n-------------------',CEND,CYELLOW,'AFD',CEND,CRED,'-------------------\n')
 print ('Alfabeto: ', CGREEM, afd['alphabet'], CRED )
-print ('Estado inicial: ', CGREEM, afd['start_state'], CRED )
-print ('Estados de aceptación: ', CGREEM, afd['final_states'], CRED )
-print ('Estados: ', CGREEM, afd['states'], CRED )
+print ('Estado inicial: ', CGREEM, afd['start_stateB'], CRED )
+print ('Estados de aceptación: ', CGREEM, afd['final_statesB'], CRED )
+print ('Estados: ', CGREEM, afd['statesB'], CRED )
 print ('Transiciones: ')
-for inicial, simbolo,final in afd['transition']:
+for inicial, simbolo,final in afd['transitionB']:
     print(CGREEM, inicial, CYELLOW, '==', CBLUE, F"({simbolo})",CYELLOW, '==>',CGREEM,final,CRED)
 
 print(CRED,'\n\n-----------------',CEND,CYELLOW,'AFD Directo',CEND,CRED,' -------------------\n')
@@ -62,15 +62,15 @@ simular('bbabaabbab',afdD['transition_function'],afdD['final_states'])
 simular('bbac',afdD['transition_function'],afdD['final_states'])
 
 print(CRED,'\n\n-----------', CYELLOW,'Minimizacion AFD',CRED ,'-----------')
-#afd_min = minimise()
-afd_min = afdD
-print('Estado inicial: ',CGREEM,afd_min['start_states'],CRED)
+afd_min = minimise()
+#afd_min = afdD
+print('Estado inicial: ',CGREEM,afd_min['start_state'],CRED)
 print('Estado de aceptacion: ',CGREEM,afd_min['final_states'],CRED)
 print('Estados: ',CGREEM,afd_min['states'],CRED)
 print('Alfabeto: ',CGREEM,afd_min['letters'],CRED)
 print('Transiciones: ')
 #print(afd_min['transition_function'])
-for inicial, simbolo, final in afd_min['transition_function']:
+for inicial, simbolo, final in afd_min['transition']:
     print(CGREEM,inicial,CYELLOW,'==',CBLUE,F"({simbolo})",CYELLOW,'==>',CGREEM,final,CRED)
 
 
