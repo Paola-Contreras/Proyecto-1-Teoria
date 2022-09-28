@@ -65,8 +65,10 @@ print(CRED,'\n\n-----------', CYELLOW,'Minimizacion AFD',CRED ,'-----------')
 afd_min = minimise()
 #afd_min = afdD
 print('Estado inicial: ',CGREEM,afd_min['start_state'],CRED)
-print('Estado de aceptacion: ',CGREEM,afd_min['final_states'],CRED)
-print('Estados: ',CGREEM,afd_min['states'],CRED)
+finalB = ["Q"+str(afd_min['states'].index(i)+1) for i in afd_min['final_states']]
+print('Estado de aceptacion: ',CGREEM,finalB,CRED)
+EstadosB = ["Q"+str(afd_min['states'].index(i)+1) for i in afd_min['states']]
+print('Estados: ',CGREEM,EstadosB,CRED)
 print('Alfabeto: ',CGREEM,afd_min['letters'],CRED)
 print('Transiciones: ')
 #print(afd_min['transition_function'])
