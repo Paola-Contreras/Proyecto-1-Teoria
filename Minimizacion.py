@@ -234,6 +234,8 @@ def minimizacion(data):
     return minAfd
 
 # Llamar
-data = abrirJSON('AFD.json')
-minAfd = minimizacion(data)
-escribirJSON(minAfd, 'minAFD.json')
+def minimise():
+    data = abrirJSON('AFD.json')
+    minAfd = minimizacion(data)
+    escribirJSON(minAfd, 'minAFD.json')
+    return minAfd
