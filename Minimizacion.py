@@ -269,3 +269,14 @@ def minimise():
     minAfd = minimizacion(data)
     escribirJSON(minAfd, 'minAFD.json')
     return minAfd
+
+def acceptance(estadoActual, cadena, transition, final_states):
+    if len(cadena) > 1:
+        for i in transition:
+            if i[0] == estadoActual and i[1] == cadena[0]:
+                cadena = cadena[1:]
+                acceptance(i[2], cadena, transition, final_states)
+    else:
+        if estadoActual in final_states:
+            return True
+        return False
