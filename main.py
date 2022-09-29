@@ -3,8 +3,8 @@ from postfix import regex_to_postfix
 from AFN import generate_afn
 from AFD import generate_afd
 from AFDirecto import generate_afdD
-from Minimizacion import minimise
-from simulacionAFD import simular
+from Minimizacion import acceptance, minimise
+from simulacionAFD import final_state, simular
 from simulacionAFN import simularAFN
 
 
@@ -63,7 +63,6 @@ simular('bbac',afdD['transition_function'],afdD['final_states'])
 
 print(CRED,'\n\n-----------', CYELLOW,'Minimizacion AFD',CRED ,'-----------')
 afd_min = minimise()
-#afd_min = afdD
 print('Estado inicial: ',CGREEM,afd_min['start_state'],CRED)
 finalB = ["Q"+str(afd_min['states'].index(i)+1) for i in afd_min['final_states']]
 print('Estado de aceptacion: ',CGREEM,finalB,CRED)
@@ -71,11 +70,19 @@ EstadosB = ["Q"+str(afd_min['states'].index(i)+1) for i in afd_min['states']]
 print('Estados: ',CGREEM,EstadosB,CRED)
 print('Alfabeto: ',CGREEM,afd_min['letters'],CRED)
 print('Transiciones: ')
-#print(afd_min['transition_function'])
 
 for inicial, simbolo, final in afd_min['transition']:
     inicial = "Q"+str(afd_min['states'].index(sorted(inicial))+1)
     final = "Q"+str(afd_min['states'].index(sorted(final))+1)
     print(CGREEM,inicial,CYELLOW,'==',CBLUE,F"({simbolo})",CYELLOW,'==>',CGREEM,final,CRED)
 
+startMin = afd_min['start_state']
+transitionMin = afd_min['transition']
+final_states_Min = afd_min['final_states']
+pertenece = acceptance(startMin, 'bbabaabbab', transitionMin, final_states_Min)
+
+if pertenece:
+    print('SI')
+else: 
+    print('NO')
 

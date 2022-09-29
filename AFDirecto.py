@@ -190,7 +190,7 @@ def generate_afdD(regex):
     states.append([])
     solve = arrange_afd(states,transitionTable,followpostable)
 
-    out_afd(solve)
+    #out_afd(solve)
 
     return solve
 
