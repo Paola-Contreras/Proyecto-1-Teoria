@@ -153,7 +153,7 @@ def arrange_afd(states,transitionTable,followpostable):
     return afd
         
 def out_afd(afd):
-    with open(sys.argv[4], 'w') as outjson:
+    with open('output_directo.json', 'w') as outjson:
         outjson.write(json.dumps(afd, indent = 4))
 
 

@@ -30,8 +30,6 @@ for inicial, simbolo, final in afn['transition_function']:
     #print(f"{inicial:4} == ({simbolo}) ==> {final:4}")
 print('\033[0m')
 
-
-print(CRED,'\n\n-----------------',CEND,CYELLOW,'AFD',CEND,CRED,' -------------------\n')
 afd = generate_afd()
 print(CRED,'\n\n-------------------',CEND,CYELLOW,'AFD',CEND,CRED,'-------------------\n')
 print ('Alfabeto: ', CGREEM, afd['alphabet'], CRED )
@@ -55,11 +53,11 @@ for inicial, simbolo, final in afdD['transition_function']:
 
 print(CRED,'\n\n-----------', CYELLOW,'Simulacion AFN',CRED ,'-----------\n')
 simularAFN('bbabaabbab',afn)
-simularAFN('bbac',afn)
+simularAFN('bba',afn)
 
 print(CRED,'\n\n-----------', CYELLOW,'Simulacion AFD',CRED ,'-----------')
 simular('bbabaabbab',afdD['transition_function'],afdD['final_states'])
-simular('bbac',afdD['transition_function'],afdD['final_states'])
+simular('bba',afdD['transition_function'],afdD['final_states'])
 
 print(CRED,'\n\n-----------', CYELLOW,'Minimizacion AFD',CRED ,'-----------')
 afd_min = minimise()
