@@ -9,8 +9,18 @@ def escribirJSON(diccionario, fileName):
     with open(str(fileName), 'w') as file:
         json.dump(diccionario, file, indent=4)
 
-def printMatrix(matrix2D):
-    for i in matrix2D:
+def printMatrix(newMatrix, newStates):
+    # imprimir matrix
+    general = []
+    laTempo = []
+    for i in range(len(newMatrix)):
+        elemen = newMatrix[i]
+        laTempo.append(elemen[2])
+        if (i+1)%len(newStates)==0:
+            general.append(laTempo)
+            laTempo = []
+
+    for i in general:
         print(i)
 
 def transitions(estado, alcanzables, recorridos, transition_function):
@@ -34,11 +44,11 @@ def induccion(parejaObjetivo, parejasMarcadas, porMarcar, transitionInput):
     '''
 
     if len(parejasMarcadas) > 1:
+        # Recorrer la lista asignada a los valores
         for i in transitionInput.items():
             primero = [] # Origenes del primer valor de la pareja
             segundo = [] # Orígenes del segundo valor de la pareja
             for j in i[1]:
-                # print(parejaObjetivo)
                 if (parejaObjetivo[0]) == sorted(j[2]):
                     primero.append((j[0]))
                 if (parejaObjetivo[1]) == sorted(j[2]):
@@ -92,10 +102,11 @@ def minimizacion(data):
 
     newStates = alcanzables
 
+    # Reviso que todos sean listas
     for i in newStates:
         if isinstance(i, str):
             i = [i]
-            
+    # Reviso si el estado inicial es una lista
     if isinstance(start_states, str):
         start_states = [start_states]
     newStates.append(start_states)
@@ -103,12 +114,13 @@ def minimizacion(data):
     # Producto cartesiano
     matrix = list(itertools.product(newStates, newStates))
 
+    # Sort de cada elemento
     sorted_final_states = []
     for i in final_states:
         sorted_final_states.append(sorted(i))
 
     final_states = sorted_final_states
-    parejasMarcadas = [] # Lista temporal con las parejas de los estados que tienen 1 
+    parejasMarcadas = [] # Lista con las parejas de los estados que tienen 1 
 
     # Verificar que parejas de la matriz (producto cartesiano) tienen solo 1 estado de aceptación
     for i in matrix:
@@ -124,6 +136,8 @@ def minimizacion(data):
     copyParejas = parejasMarcadas
     # Sacar todas las transiciones según input
     transitionInput = {} # Diccionario con transiciones según input
+
+    # Definir llaves
     for i in letters:
         transitionInput[i] = []
 
@@ -153,7 +167,6 @@ def minimizacion(data):
     # Categorizar según 0 o 1
     ceros = []
     for i in newMatrix:
-        # print(i[2])
         if i[2] == 0:
             # No jalar (q,q)
             if i[0] != i[1]:
@@ -180,26 +193,41 @@ def minimizacion(data):
     # Cambiar transiciones
     for i in ceros:
         for j in transition_function:
+            # Sustituir valor por nuevo conjunto
+            # Si es el origen lo puedo borrar, pero tengo que dejar  las transiciones con las letters para el estado cerosFusion
             if sorted(j[0]) in i:
                 j[0] = cerosFusion
             if sorted(j[2]) in i:
                 j[2] = cerosFusion
+            j[0] = sorted(j[0])
+            j[2] = sorted(j[2])
 
-    tempTransition = []
+    # Eliminar los que no son el inicio de otra tranformación.
+    for i in transition_function:
+        starting = 0
+        for j in transition_function:
+            if i[2] == j[0]:
+                starting += 1
+        if starting == 0:
+            transition_function.remove(i)
+
     newTransition = []
+    lettersTemp = []
     for i in transition_function:
         if sorted(i[0]) == sorted(cerosFusion):
-            tempTransition == i
             # Ver si es estado final
             if sorted(i[0]) in final_states:
-                if sorted(i[0]) not in minAFD_final_states:
-                    minAFD_final_states.append(sorted(i[0]))
+                if cerosFusion not in minAFD_final_states:
+                    minAFD_final_states.append(sorted(cerosFusion))
+                # Añadir las cantidad de transiciones = a len(letter)
+                for j in letters:
+                    if i[1] == j and j not in lettersTemp:
+                        newTransition.append(i)
+                        lettersTemp.append(i[1])
                 final_states.remove(sorted(i[0]))
         else:
             newTransition.append(i)
 
-    if len(newTransition) > 0:
-        newTransition.append(tempTransition)
     transition_function = newTransition
 
     transition_functionTemp = []
@@ -208,13 +236,13 @@ def minimizacion(data):
             transition_functionTemp.append(i)
 
     transition_function = transition_functionTemp
-    transition_function = [x for x in transition_function if x]
+    transition_function = [x for x in transition_function if x] #Eliminar objetos incompletos
 
     # Tomar los estados nuevos
     for i in transition_function:
         if sorted(i[0]) not in minAFD_estados:
             minAFD_estados.append(sorted(i[0]))
-        
+
     # Eliminar duplicados
     tempDuplicates = []
     for i in final_states:
@@ -222,9 +250,11 @@ def minimizacion(data):
             tempDuplicates.append(sorted(i))
 
     final_states = tempDuplicates
+    if sorted(cerosFusion) not in final_states:
+        final_states.append(sorted(cerosFusion)) 
 
     # Escribir en JSON
-    minAfd ={}
+    minAfd = {}
     minAfd['letters'] = letters
     minAfd['start_state'] = start_states
     minAfd['states'] = minAFD_estados

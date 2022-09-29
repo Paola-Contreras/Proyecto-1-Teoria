@@ -72,7 +72,10 @@ print('Estados: ',CGREEM,EstadosB,CRED)
 print('Alfabeto: ',CGREEM,afd_min['letters'],CRED)
 print('Transiciones: ')
 #print(afd_min['transition_function'])
+
 for inicial, simbolo, final in afd_min['transition']:
+    inicial = "Q"+str(afd_min['states'].index(sorted(inicial))+1)
+    final = "Q"+str(afd_min['states'].index(sorted(final))+1)
     print(CGREEM,inicial,CYELLOW,'==',CBLUE,F"({simbolo})",CYELLOW,'==>',CGREEM,final,CRED)
 
 
